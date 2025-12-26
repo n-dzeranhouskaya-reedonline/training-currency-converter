@@ -12,6 +12,8 @@ export const CURRENCIES: Currency[] = [
   { code: 'CNY', name: 'Chinese Yuan', symbol: '¥' },
   { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
   { code: 'MXN', name: 'Mexican Peso', symbol: '$' },
+  { code: 'GEL', name: 'Georgian Lari', symbol: '₾' },
+  { code: 'BYN', name: 'Belarusian Ruble', symbol: 'Br' },
 ];
 
 /**

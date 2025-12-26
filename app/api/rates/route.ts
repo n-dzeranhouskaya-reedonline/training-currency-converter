@@ -8,7 +8,13 @@ const API_SOURCES = [
     url: 'https://api.frankfurter.app/latest?from=USD',
     transform: (data: any) => ({
       base: data.base,
-      rates: { USD: 1, ...data.rates }, // Add USD since it's not included
+      rates: {
+        USD: 1, 
+        ...data.rates,
+        // Add currencies not supported by frankfurter.app
+        GEL: 2.68,
+        BYN: 3.27,
+      },
     }),
   },
 ];
@@ -64,6 +70,8 @@ const MOCK_RATES = {
     CNY: 7.24,
     INR: 83.12,
     MXN: 17.25,
+    GEL: 2.68,
+    BYN: 3.27,
   },
 };
 

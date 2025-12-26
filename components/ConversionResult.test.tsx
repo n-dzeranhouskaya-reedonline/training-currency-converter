@@ -39,7 +39,7 @@ describe('ConversionResult', () => {
       />
     );
     
-    expect(screen.getByText(/1 USD = 0.8500 EUR/)).toBeInTheDocument();
+    expect(screen.getByText(/1 \$ = 0\.8500 €/)).toBeInTheDocument();
   });
 
   it('should not display rate when rate is null', () => {
@@ -52,7 +52,7 @@ describe('ConversionResult', () => {
       />
     );
     
-    expect(screen.queryByText(/1 USD =/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/1 \$ =/)).not.toBeInTheDocument();
   });
 
   it('should format result with 2 decimal places', () => {
@@ -78,7 +78,7 @@ describe('ConversionResult', () => {
       />
     );
     
-    expect(screen.getByText(/0.8512 EUR/)).toBeInTheDocument();
+    expect(screen.getByText(/0\.8512 €/)).toBeInTheDocument();
   });
 
   it('should handle different currency symbols', () => {
@@ -116,5 +116,33 @@ describe('ConversionResult', () => {
     );
     
     expect(screen.getByText(/€0.00/)).toBeInTheDocument();
+  });
+
+  it('should handle Georgian Lari (GEL) currency', () => {
+    render(
+      <ConversionResult
+        result={268}
+        fromCurrency="USD"
+        toCurrency="GEL"
+        rate={2.68}
+      />
+    );
+    
+    expect(screen.getByText(/₾268.00/)).toBeInTheDocument();
+    expect(screen.getByText(/1 \$ = 2\.6800 ₾/)).toBeInTheDocument();
+  });
+
+  it('should handle Belarusian Ruble (BYN) currency', () => {
+    render(
+      <ConversionResult
+        result={327}
+        fromCurrency="USD"
+        toCurrency="BYN"
+        rate={3.27}
+      />
+    );
+    
+    expect(screen.getByText(/Br327.00/)).toBeInTheDocument();
+    expect(screen.getByText(/1 \$ = 3\.2700 Br/)).toBeInTheDocument();
   });
 });
