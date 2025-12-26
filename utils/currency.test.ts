@@ -5,6 +5,7 @@ import {
   convertCurrency,
   formatCurrencyDisplay,
   validateAmount,
+  sortCurrenciesWithFavorites,
 } from './currency';
 
 describe('currency utils', () => {
@@ -135,6 +136,76 @@ describe('currency utils', () => {
         isValid: false,
         error: 'Amount is too large',
       });
+    });
+  });
+
+  describe('sortCurrenciesWithFavorites', () => {
+    it('should place favorite currencies at the top', () => {
+      const favorites = ['EUR', 'GBP'];
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, favorites);
+      
+      expect(sorted[0].code).toBe('EUR');
+      expect(sorted[1].code).toBe('GBP');
+    });
+
+    it('should sort favorites alphabetically', () => {
+      const favorites = ['GBP', 'EUR', 'USD'];
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, favorites);
+      
+      expect(sorted[0].code).toBe('EUR');
+      expect(sorted[1].code).toBe('GBP');
+      expect(sorted[2].code).toBe('USD');
+    });
+
+    it('should sort non-favorites alphabetically', () => {
+      const favorites = ['USD'];
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, favorites);
+      
+      // USD should be first
+      expect(sorted[0].code).toBe('USD');
+      
+      // Rest should be alphabetical
+      const nonFavorites = sorted.slice(1);
+      const codes = nonFavorites.map(c => c.code);
+      const sortedCodes = [...codes].sort();
+      expect(codes).toEqual(sortedCodes);
+    });
+
+    it('should handle empty favorites array', () => {
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, []);
+      
+      // All should be alphabetically sorted
+      const codes = sorted.map(c => c.code);
+      const sortedCodes = [...codes].sort();
+      expect(codes).toEqual(sortedCodes);
+    });
+
+    it('should handle all currencies being favorites', () => {
+      const allCodes = CURRENCIES.map(c => c.code);
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, allCodes);
+      
+      // All should be alphabetically sorted
+      const codes = sorted.map(c => c.code);
+      const sortedCodes = [...codes].sort();
+      expect(codes).toEqual(sortedCodes);
+    });
+
+    it('should handle non-existent currency codes in favorites', () => {
+      const favorites = ['USD', 'INVALID', 'EUR'];
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, favorites);
+      
+      // Should only show valid favorites at top
+      expect(sorted[0].code).toBe('EUR');
+      expect(sorted[1].code).toBe('USD');
+    });
+
+    it('should return new array without mutating original', () => {
+      const original = [...CURRENCIES];
+      const favorites = ['EUR', 'USD'];
+      const sorted = sortCurrenciesWithFavorites(CURRENCIES, favorites);
+      
+      expect(sorted).not.toBe(CURRENCIES);
+      expect(CURRENCIES).toEqual(original);
     });
   });
 });

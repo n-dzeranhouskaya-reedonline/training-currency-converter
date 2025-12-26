@@ -1,4 +1,4 @@
-import { Currency } from '@/types';
+import { Currency, FavoriteCurrencies } from '@/types';
 
 // List of supported currencies with their details
 export const CURRENCIES: Currency[] = [
@@ -86,4 +86,25 @@ export function validateAmount(value: string): {
   }
 
   return { isValid: true };
+}
+
+/**
+ * Sort currencies with favorites at the top
+ * Both favorites and non-favorites are sorted alphabetically within their sections
+ */
+export function sortCurrenciesWithFavorites(
+  currencies: Currency[],
+  favorites: FavoriteCurrencies
+): Currency[] {
+  // Separate into favorites and non-favorites
+  const favoriteCurrencies = currencies
+    .filter((c) => favorites.includes(c.code))
+    .sort((a, b) => a.code.localeCompare(b.code));
+
+  const nonFavoriteCurrencies = currencies
+    .filter((c) => !favorites.includes(c.code))
+    .sort((a, b) => a.code.localeCompare(b.code));
+
+  // Return favorites first, then non-favorites
+  return [...favoriteCurrencies, ...nonFavoriteCurrencies];
 }

@@ -2,7 +2,7 @@ import AmountInput from './AmountInput';
 import CurrencySelect from './CurrencySelect';
 import SwapButton from './SwapButton';
 import ConversionResult from './ConversionResult';
-import { ExchangeRates } from '@/types';
+import { ExchangeRates, FavoriteCurrencies } from '@/types';
 
 interface ConverterFormProps {
   amount: string;
@@ -15,6 +15,9 @@ interface ConverterFormProps {
   onFromCurrencyChange: (value: string) => void;
   onToCurrencyChange: (value: string) => void;
   onSwap: () => void;
+  favorites?: FavoriteCurrencies;
+  onFavoriteToggle?: (currencyCode: string) => void;
+  favoriteError?: string | null;
 }
 
 export default function ConverterForm({
@@ -28,6 +31,9 @@ export default function ConverterForm({
   onFromCurrencyChange,
   onToCurrencyChange,
   onSwap,
+  favorites,
+  onFavoriteToggle,
+  favoriteError,
 }: ConverterFormProps) {
   const currentRate = exchangeRates && fromCurrency && toCurrency
     ? exchangeRates.rates[toCurrency] / exchangeRates.rates[fromCurrency]
@@ -47,6 +53,10 @@ export default function ConverterForm({
           <CurrencySelect
             value={fromCurrency}
             onChange={onFromCurrencyChange}
+            label="From"
+            favorites={favorites}
+            onFavoriteToggle={onFavoriteToggle}
+            favoriteError={favoriteError}
           />
 
           <SwapButton onClick={onSwap} />
@@ -54,6 +64,9 @@ export default function ConverterForm({
           <CurrencySelect
             value={toCurrency}
             onChange={onToCurrencyChange}
+            label="To"
+            favorites={favorites}
+            onFavoriteToggle={onFavoriteToggle}
           />
         </div>
         

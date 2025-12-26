@@ -9,6 +9,7 @@ import ConverterForm from '@/components/ConverterForm';
 import ConversionHistory from '@/components/ConversionHistory';
 import { useExchangeRates } from '@/hooks/useExchangeRates';
 import { useConverter } from '@/hooks/useConverter';
+import { useFavoriteCurrencies } from '@/hooks/useFavoriteCurrencies';
 
 export default function Home() {
   const [showHistory, setShowHistory] = useState<boolean>(false);
@@ -31,6 +32,13 @@ export default function Home() {
     loadFromHistory,
     clearConversionHistory,
   } = useConverter(exchangeRates);
+
+  // Favorites logic
+  const {
+    favorites,
+    toggleFavorite,
+    error: favoriteError,
+  } = useFavoriteCurrencies();
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
@@ -58,6 +66,9 @@ export default function Home() {
               onFromCurrencyChange={setFromCurrency}
               onToCurrencyChange={setToCurrency}
               onSwap={handleSwap}
+              favorites={favorites}
+              onFavoriteToggle={toggleFavorite}
+              favoriteError={favoriteError}
             />
           )}
         </div>

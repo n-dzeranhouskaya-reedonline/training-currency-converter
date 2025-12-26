@@ -4,6 +4,7 @@ export { default as ConversionResult } from './ConversionResult';
 export { default as ConverterForm } from './ConverterForm';
 export { default as CurrencySelect } from './CurrencySelect';
 export { default as ErrorMessage } from './ErrorMessage';
+export { default as FavoriteButton } from './FavoriteButton';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as PageFooter } from './PageFooter';
 export { default as PageHeader } from './PageHeader';
