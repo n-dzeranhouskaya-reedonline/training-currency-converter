@@ -16,6 +16,7 @@ export default function ConversionResult({
   if (result === null) return null;
 
   const toCurrencyData = CURRENCIES.find(c => c.code === toCurrency);
+  const fromCurrencyData = CURRENCIES.find(c => c.code === fromCurrency);
 
   return (
     <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
@@ -27,7 +28,7 @@ export default function ConversionResult({
         </div>
         {rate && (
           <div className="text-sm text-gray-600">
-            1 {fromCurrency} = {formatAmount(rate, 4)} {toCurrency}
+            1 {fromCurrencyData?.symbol || fromCurrency} = {formatAmount(rate, 4)} {toCurrencyData?.symbol || toCurrency}
           </div>
         )}
       </div>
