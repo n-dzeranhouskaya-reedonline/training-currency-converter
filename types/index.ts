@@ -32,3 +32,42 @@ export interface ApiResponse {
   data?: ExchangeRates;
   error?: string;
 }
+
+// Favorite Currencies Types
+
+/**
+ * Array of favorited currency codes
+ * Stored in localStorage under key 'currency_favorites'
+ * Maximum length: 5
+ */
+export type FavoriteCurrencies = string[];
+
+/**
+ * Currency with favorite status metadata
+ * Extended from base Currency type with derived isFavorite flag
+ */
+export interface CurrencyWithFavoriteStatus extends Currency {
+  isFavorite: boolean;
+}
+
+/**
+ * Return type for useFavoriteCurrencies hook
+ */
+export interface UseFavoriteCurrenciesResult {
+  favorites: FavoriteCurrencies;
+  isFavorite: (currencyCode: string) => boolean;
+  toggleFavorite: (currencyCode: string) => void;
+  canAddFavorite: () => boolean;
+  error: string | null;
+  clearError: () => void;
+}
+
+/**
+ * Props for FavoriteButton component
+ */
+export interface FavoriteButtonProps {
+  currencyCode: string;
+  isFavorite: boolean;
+  onToggle: (currencyCode: string) => void;
+  disabled?: boolean;
+}

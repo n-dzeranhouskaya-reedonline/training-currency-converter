@@ -36,7 +36,9 @@ describe('ConverterForm', () => {
     render(<ConverterForm {...defaultProps} />);
     
     expect(screen.getByPlaceholderText('Enter amount')).toBeInTheDocument();
-    expect(screen.getAllByRole('combobox')).toHaveLength(2);
+    // Currency selects are now buttons with listbox role
+    expect(screen.getByRole('button', { name: /USD - US Dollar/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /EUR - Euro/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /swap currencies/i })).toBeInTheDocument();
   });
 
@@ -75,8 +77,13 @@ describe('ConverterForm', () => {
     
     render(<ConverterForm {...defaultProps} />);
     
-    const selects = screen.getAllByRole('combobox');
-    await user.selectOptions(selects[0], 'GBP');
+    // Open the "From" dropdown
+    const fromButton = screen.getByRole('button', { name: /USD - US Dollar/ });
+    await user.click(fromButton);
+    
+    // Select GBP from dropdown
+    const gbpOption = screen.getByRole('option', { name: /GBP - British Pound/ });
+    await user.click(gbpOption);
     
     expect(defaultProps.onFromCurrencyChange).toHaveBeenCalledWith('GBP');
   });
@@ -86,8 +93,13 @@ describe('ConverterForm', () => {
     
     render(<ConverterForm {...defaultProps} />);
     
-    const selects = screen.getAllByRole('combobox');
-    await user.selectOptions(selects[1], 'JPY');
+    // Open the "To" dropdown
+    const toButton = screen.getByRole('button', { name: /EUR - Euro/ });
+    await user.click(toButton);
+    
+    // Select JPY from dropdown
+    const jpyOption = screen.getByRole('option', { name: /JPY - Japanese Yen/ });
+    await user.click(jpyOption);
     
     expect(defaultProps.onToCurrencyChange).toHaveBeenCalledWith('JPY');
   });
